@@ -13,6 +13,7 @@ export interface Post {
   id: string;
   title: string;
   body: string;
+  comment?: Comment;
 }
 
 export interface Posts {

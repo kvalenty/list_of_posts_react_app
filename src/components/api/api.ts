@@ -1,7 +1,7 @@
 import { Dispatch } from 'redux';
 import { loadedPosts } from '../../redux/actions';
-
-const POSTS_URL = 'https://bloggy-api.herokuapp.com/posts';
+import { Comment, Post } from '../../interfaces/interfaces';
+import { POSTS_URL, COMMENTS_URL } from '../../constants';
 
 const myHeaders = new Headers();
 
@@ -13,16 +13,26 @@ const requestOptions: RequestInit = {
   redirect: 'follow',
 };
 
-export const loadPosts = async (dispatch: Dispatch) => {
-  await fetch(POSTS_URL, requestOptions)
-    .then(response => response.json())
-    .then(result => {
-      dispatch(loadedPosts(result));
-    });
-};
-
-export const loadData = async <T>(url: string): Promise<T[]> => {
-  const responsed = await fetch(url).then((response) => response.json());
+const loadData = async <T>(url: string, options: RequestInit): Promise<T[]> => {
+  const responsed = await fetch(url, options).then((response) => response.json());
 
   return responsed;
+};
+
+const preparedPosts = (posts: Post[], comments: Comment[]) => {
+  const preparedList = posts.map(post => ({
+    ...post,
+    comments: comments.filter(comment => comment.postId === post.id),
+  }));
+
+  return preparedList;
+};
+
+export const loadPosts = async (dispatch: Dispatch) => {
+  const posts = await loadData<Post>(POSTS_URL, requestOptions);
+  const comments = await loadData<Comment>(COMMENTS_URL, requestOptions);
+
+  const preparedList = preparedPosts(posts, comments);
+
+  dispatch(loadedPosts(preparedList));
 };

@@ -2,6 +2,7 @@ import React from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import { Dispatch } from 'redux';
 import { RootState, Posts } from '../../interfaces/interfaces';
+import { PostItem } from '../PostItem/PostItem';
 
 const mapStateToProps = (state: RootState) => state;
 
@@ -12,12 +13,16 @@ type Props = ConnectedProps<typeof connector> & {
   posts: Posts;
 };
 
-const PostList = (props: Props) => {
-  const { posts } = props;
+const PostsList = (props: Props) => {
+  const { posts: { posts } } = props;
 
   return (
-    <h1>hello</h1>
+    <>
+      {posts.map((post) => (
+        <PostItem post={post} key={post.id} />
+      ))}
+    </>
   );
 };
 
-export default connector(PostList);
+export default connector(PostsList);
