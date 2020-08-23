@@ -4,7 +4,7 @@ import { Dispatch } from 'redux';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { RootState, Posts } from '../../interfaces/interfaces';
-import { uploadPost, loadPosts } from '../api/api';
+import { uploadPost } from '../api/api';
 import { addPost } from '../../redux/actions';
 
 const mapStateToProps = (state: RootState) => state;

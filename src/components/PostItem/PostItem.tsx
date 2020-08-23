@@ -5,6 +5,7 @@ import Button from 'react-bootstrap/Button';
 import { Post, RootState } from '../../interfaces/interfaces';
 import { removePost } from '../api/api';
 import { deletePost } from '../../redux/actions';
+import EditPost from '../EditPost/EditPost';
 
 const mapStateToProps = (state: RootState) => state;
 
@@ -28,15 +29,20 @@ const PostItem = (props: Props) => {
     }
   };
 
-  const editPostHandle = () => setIsEdit(true);
+  const editPostHandle = () => setIsEdit(!isEdit);
 
   return (
     <Card className="text-center m-3">
       <Card.Body>
-        <Card.Title>{post.title}</Card.Title>
-        <Card.Text>
-          {post.body}
-        </Card.Text>
+        {isEdit && <EditPost post={post} editPostHandle={editPostHandle} />}
+        {!isEdit && (
+          <>
+            <Card.Title>{post.title}</Card.Title>
+            <Card.Text>
+              {post.body}
+            </Card.Text>
+          </>
+        )}
         <Button variant="danger" onClick={() => removePostHandle()}>Delete</Button>
         <Button variant="warning" onClick={editPostHandle} disabled={isEdit}>Edit</Button>
       </Card.Body>

@@ -1,5 +1,10 @@
 import { Action, Post } from '../interfaces/interfaces';
-import { LOAD_POSTS, REMOVE_POST, ADD_POST } from './actionTypes';
+import {
+  LOAD_POSTS,
+  REMOVE_POST,
+  ADD_POST,
+  UPDATE_POST,
+} from './actionTypes';
 
 export const loadedPosts = (payload: Post[]): Action => {
   return {
@@ -18,6 +23,13 @@ export const deletePost = (payload: number): Action => {
 export const addPost = (payload: Post): Action => {
   return {
     type: ADD_POST,
+    payload,
+  };
+};
+
+export const updatePost = (payload: Post): Action => {
+  return {
+    type: UPDATE_POST,
     payload,
   };
 };
