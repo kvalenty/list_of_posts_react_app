@@ -5,15 +5,15 @@ export interface Action {
 
 export interface Comment {
   id: string;
-  postId: string;
+  postId: number;
   body: string;
 }
 
 export interface Post {
-  id: string;
+  id: number;
   title: string;
   body: string;
-  comment?: Comment;
+  comments?: Comment[];
 }
 
 export interface Posts {

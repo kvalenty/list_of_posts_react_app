@@ -1,28 +1,26 @@
 import React, { useEffect } from 'react';
-import { useDispatch, connect, ConnectedProps } from 'react-redux';
-import { Dispatch } from 'redux';
+import { useDispatch, connect } from 'react-redux';
 import { loadPosts } from './components/api/api';
-import { RootState, Posts } from './interfaces/interfaces';
+import { RootState } from './interfaces/interfaces';
 import PostsList from './components/PostsList/PostsList';
+import AddPost from './components/AddPost/AddPost';
 
 const mapStateToProps = (state: RootState) => state;
 
 const connector = connect(mapStateToProps);
-
-type Props = ConnectedProps<typeof connector> & {
-  dispatch: Dispatch;
-  posts: Posts;
-};
 
 const App = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
     loadPosts(dispatch);
-  }, []);
+  }, [dispatch]);
 
   return (
-    <PostsList />
+    <>
+      <AddPost />
+      <PostsList />
+    </>
   );
 };
 

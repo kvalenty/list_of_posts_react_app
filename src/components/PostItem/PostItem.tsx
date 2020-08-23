@@ -1,23 +1,48 @@
-import React from 'react';
-// import { connect } from 'react-redux';
-// import { Dispatch } from 'redux';
-import { Post } from '../../interfaces/interfaces';
+import React, { useState } from 'react';
+import Card from 'react-bootstrap/Card';
+import { connect, useDispatch } from 'react-redux';
+import Button from 'react-bootstrap/Button';
+import { Post, RootState } from '../../interfaces/interfaces';
+import { removePost } from '../api/api';
+import { deletePost } from '../../redux/actions';
 
-// const mapStateToProps = (state: RootState) => state;
+const mapStateToProps = (state: RootState) => state;
 
-// const connector = connect(mapStateToProps);
+const connector = connect(mapStateToProps);
 
 type Props = {
   post: Post;
 };
 
-export const PostItem = (props: Props) => {
+const PostItem = (props: Props) => {
   const { post } = props;
-  console.log(post);
+  const dispatch = useDispatch();
+  const [isEdit, setIsEdit] = useState(false);
+
+  const removePostHandle = () => {
+    const confirm = window.confirm('Are you sure?');
+
+    if (confirm) {
+      removePost(post.id);
+      dispatch(deletePost(post.id));
+    }
+  };
+
+  const editPostHandle = () => setIsEdit(true);
 
   return (
-  <h1>{post.title}</h1>
+    <Card className="text-center m-3">
+      <Card.Body>
+        <Card.Title>{post.title}</Card.Title>
+        <Card.Text>
+          {post.body}
+        </Card.Text>
+        <Button variant="danger" onClick={() => removePostHandle()}>Delete</Button>
+        <Button variant="warning" onClick={editPostHandle} disabled={isEdit}>Edit</Button>
+      </Card.Body>
+      <Card.Footer className="text-muted">{`Comments: ${post.comments?.length}`}</Card.Footer>
+    </Card>
   );
 };
 
-// export default connector(PostItem);
+export default connector(PostItem);

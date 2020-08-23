@@ -2,7 +2,7 @@ import React from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import { Dispatch } from 'redux';
 import { RootState, Posts } from '../../interfaces/interfaces';
-import { PostItem } from '../PostItem/PostItem';
+import PostItem from '../PostItem/PostItem';
 
 const mapStateToProps = (state: RootState) => state;
 
