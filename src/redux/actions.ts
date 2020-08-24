@@ -1,35 +1,56 @@
-import { Action, Post } from '../interfaces/interfaces';
 import {
-  LOAD_POSTS,
+  Action,
+  Post,
+  Comment,
+  CommentUpload,
+} from '../interfaces/interfaces';
+import {
+  SET_POSTS,
   REMOVE_POST,
   ADD_POST,
   UPDATE_POST,
+  SET_COMMENTS,
+  UPDATE_COMMENTS,
 } from './actionTypes';
 
-export const loadedPosts = (payload: Post[]): Action => {
+export const setPreparedPosts = (payload: Post[]): Action<Post[]> => {
   return {
-    type: LOAD_POSTS,
+    type: SET_POSTS,
     payload,
   };
 };
 
-export const deletePost = (payload: number): Action => {
+export const setComments = (payload: Comment[]): Action<Comment[]> => {
+  return {
+    type: SET_COMMENTS,
+    payload,
+  };
+};
+
+export const deletePost = (payload: number): Action<number> => {
   return {
     type: REMOVE_POST,
     payload,
   };
 };
 
-export const addPost = (payload: Post): Action => {
+export const addPost = (payload: Post): Action<Post> => {
   return {
     type: ADD_POST,
     payload,
   };
 };
 
-export const updatePost = (payload: Post): Action => {
+export const updatePost = (payload: Post): Action<Post> => {
   return {
     type: UPDATE_POST,
     payload,
+  };
+};
+
+export const updateComments = (postId: number, body: string): Action<CommentUpload> => {
+  return {
+    type: UPDATE_COMMENTS,
+    payload: { postId, body },
   };
 };

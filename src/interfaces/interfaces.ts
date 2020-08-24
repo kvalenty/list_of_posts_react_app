@@ -1,10 +1,16 @@
-export interface Action {
+export interface Action<T> {
   type: string;
-  payload: any | any[];
+  // payload: Post | Comment | Post[] | Comment[] | number | string;
+  payload: T;
 }
 
 export interface Comment {
-  id: string;
+  id: number;
+  postId: number;
+  body: string;
+}
+
+export interface CommentUpload {
   postId: number;
   body: string;
 }

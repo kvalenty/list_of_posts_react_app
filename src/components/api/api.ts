@@ -1,7 +1,7 @@
 import { Dispatch } from 'redux';
-import { loadedPosts } from '../../redux/actions';
+import { setPreparedPosts, setComments } from '../../redux/actions';
 import { Comment, Post } from '../../interfaces/interfaces';
-import { POSTS_URL, COMMENTS_URL, REMOVE_URL } from '../../constants';
+import { POSTS_URL, COMMENTS_URL } from '../../constants';
 
 const myHeaders = new Headers();
 
@@ -12,6 +12,7 @@ const loadOptions = (): RequestInit => ({
   headers: myHeaders,
   redirect: 'follow',
 });
+
 const uploadOptions = (raw: string): RequestInit => ({
   method: 'POST',
   headers: myHeaders,
@@ -22,7 +23,6 @@ const uploadOptions = (raw: string): RequestInit => ({
 const removeOptions = (): RequestInit => ({
   method: 'DELETE',
   headers: myHeaders,
-  // body: new FormData(),
   redirect: 'follow',
 });
 
@@ -47,7 +47,8 @@ export const loadPosts = async (dispatch: Dispatch) => {
 
   const preparedList = preparedPosts(posts, comments);
 
-  dispatch(loadedPosts(preparedList));
+  dispatch(setComments(comments));
+  dispatch(setPreparedPosts(preparedList));
 };
 
 export const uploadPost = async (title: string, body: string) => {
@@ -55,11 +56,22 @@ export const uploadPost = async (title: string, body: string) => {
 
   fetch(POSTS_URL, uploadOptions(raw))
     .then(response => response.text())
+    // eslint-disable-next-line no-console
+    .catch(error => console.error(error));
+};
+
+export const uploadComment = async (postId: number, body: string) => {
+  const raw = JSON.stringify({ postId, body });
+
+  fetch(COMMENTS_URL, uploadOptions(raw))
+    .then(response => response.text())
+    // eslint-disable-next-line no-console
     .catch(error => console.error(error));
 };
 
 export const removePost = async (id: number) => {
-  fetch(`${REMOVE_URL}${id}`, removeOptions())
+  fetch(`${POSTS_URL}/${id}`, removeOptions())
     .then(response => response.text())
+    // eslint-disable-next-line no-console
     .catch(error => console.error(error));
 };
