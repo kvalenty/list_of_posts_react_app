@@ -45,7 +45,12 @@ const PostsList = (props: Props) => {
 
     if (title.trim() && body.trim()) {
       uploadPost(title, body);
-      dispatch(addPost({ id: lastId + 1, title, body }));
+      dispatch(addPost({
+        id: lastId + 1,
+        title,
+        body,
+        comments: [],
+      }));
       setTitle('');
       setBody('');
     }
